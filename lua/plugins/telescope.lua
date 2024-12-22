@@ -12,8 +12,8 @@ return {
             defaults = {
                 mappings = {
                     i = {
-                        ["<C-n>"] = "move_selection_next",
-                        ["<C-p>"] = "move_selection_previous",
+                        ["<C-j>"] = "move_selection_next",
+                        ["<C-k>"] = "move_selection_previous",
                     },
                 },
             },
