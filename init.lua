@@ -1,13 +1,20 @@
--- Autocommand to reload Neovim and sync plugins when saving init.lua
-vim.cmd([[
-    augroup packer_user_config
-        autocmd!
-        autocmd BufWritePost init.lua source <afile> | PackerSync
-    augroup end
-]])
+-- Install Lazy.nvim if not already installed
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
 
--- Plugin management
-require('plugins.packer')
+-- General Vim settings
+require("vim-settings")
 
--- Plugin configurations
-require('configs.treesitter')
+-- Load plugins
+require("lazy").setup(require("plugins"))
+
