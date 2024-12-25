@@ -17,7 +17,14 @@ return {
                     },
                 },
             },
-        })
+            extensions = {
+                ["ui-select"] = {
+                    require("telescope.themes").get_dropdown {}
+                    }
+                }
+            })
+
+        telescope.load_extension("ui-select")
 
         -- Key mappings
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
