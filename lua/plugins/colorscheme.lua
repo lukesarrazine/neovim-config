@@ -1,7 +1,7 @@
 local theme_priority = 1000
 local current_colorscheme_index = 1
 local default_colorscheme = "bamboo"
-local colorschemes = { default_colorscheme, "rose-pine", "nightfox" }
+local colorschemes = { default_colorscheme, "kanagawa-lotus", "nightfox", "rose-pine" }
 
 local function cycle_colorscheme()
 	current_colorscheme_index = current_colorscheme_index + 1
@@ -31,6 +31,11 @@ return {
 		config = function()
 			require("bamboo").setup({})
 		end,
+	},
+	{
+		"rebelot/kanagawa.nvim",
+		priority = theme_priority,
+		lazy = false,
 	},
 	{
 		"rose-pine/neovim",
