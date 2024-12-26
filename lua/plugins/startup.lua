@@ -12,8 +12,7 @@ return {
         local animation = require("animations.robots")
         local parse_txt = require("animations.parse-txt-to-frames")
 
-        print("Current working directory:", os.getenv("PWD") or io.popen("pwd"):read("*l"))
-        parse_txt("./lua/movies/star-wars-iv.txt", "./lua/movies/star-wars-iv.lua")
+        local frames = parse_txt("./lua/movies/star-wars-iv.txt")
 
         dashboard.section.header.val = {
             [[                                                                       ]],
@@ -33,7 +32,7 @@ return {
             [[                                                                       ]],
         }
         -- Start the animation
-        animate(dashboard, alpha, animation)
+        animate(dashboard, alpha, frames)
         alpha.setup(dashboard.config)
     end,
 }

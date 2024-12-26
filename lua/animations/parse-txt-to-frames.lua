@@ -1,4 +1,4 @@
-local function parse_and_save_frames(txt_filename, lua_filename)
+local function parse_and_save_frames(txt_filename)
 	local frames = {}
 	local current_frame = {}
 	local line_count = 0
@@ -32,19 +32,7 @@ local function parse_and_save_frames(txt_filename, lua_filename)
 
 	txt_file:close()
 
-	-- Open the Lua file for writing
-	local lua_file = io.open(lua_filename, "w")
-	if not lua_file then
-		error("Failed to open Lua file: " .. lua_filename)
-	end
-
-	-- Write frames as a Lua table
-	lua_file:write("local frames = {\n")
-	for i, frame in ipairs(frames) do
-		lua_file:write(string.format("{\n %s \n},", frame))
-	end
-	lua_file:write("}\n\nreturn frames\n")
-	lua_file:close()
+	return frames
 end
 
 return parse_and_save_frames
