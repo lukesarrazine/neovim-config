@@ -1,6 +1,6 @@
-local function animate(dashboard, alpha, frames)
-	local index = 1
-	vim.fn.timer_start(200, function()
+local function animate(dashboard, alpha, frames, start_frame)
+	local index = start_frame
+	vim.fn.timer_start(100, function()
 		dashboard.section.header.val = frames[index]
 		alpha.redraw()
 		index = (index % #frames) + 1
