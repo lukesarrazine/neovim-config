@@ -12,7 +12,11 @@ return {
 		local animation = require("animations.robots")
 		local parse_txt = require("animations.parse-txt-to-frames")
 
-		local frames = parse_txt("./lua/movies/star-wars-iv.txt")
+		local config_dir = vim.fn.stdpath("config")
+		local file_path = config_dir .. "/lua/movies/star-wars-iv.txt"
+
+		local frames = parse_txt(file_path)
+		math.randomseed(os.time()) -- Seed the random number generator with the current time
 		local start_frame = math.random(1, #frames)
 
 		dashboard.section.header.val = {
