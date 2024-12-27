@@ -2,7 +2,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-        require('ext-dependencies.ripgrep').ensure_ripgrep()
+        require("ext-dependencies.ripgrep").ensure_ripgrep()
 
         local telescope = require("telescope")
         local builtin = require("telescope.builtin")
@@ -16,13 +16,24 @@ return {
                         ["<C-k>"] = "move_selection_previous",
                     },
                 },
+                file_ignore_patterns = {
+                    "target/",
+                    "%.o",
+                    "%.d",
+                    "%.so",
+                    "node_modules/",
+                },
+                vimgrep_arguments = {
+                    "--ignore",
+                    "--smart-case",
+                },
             },
             extensions = {
                 ["ui-select"] = {
-                    require("telescope.themes").get_dropdown {}
-                    }
-                }
-            })
+                    require("telescope.themes").get_dropdown({}),
+                },
+            },
+        })
 
         telescope.load_extension("ui-select")
 
@@ -33,4 +44,3 @@ return {
         vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find Help Tags" })
     end,
 }
-

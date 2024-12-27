@@ -10,6 +10,7 @@ return {
 				"ts_ls",
 				"csharp_ls",
 				"rust_analyzer",
+				"svelte",
 			},
 		})
 
@@ -28,6 +29,7 @@ return {
 		lspconfig.ts_ls.setup({})
 		lspconfig.csharp_ls.setup({})
 		lspconfig.rust_analyzer.setup({})
+		lspconfig.svelte.setup({})
 
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
