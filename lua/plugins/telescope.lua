@@ -18,14 +18,9 @@ return {
                 },
                 file_ignore_patterns = {
                     "target/",
-                    "%.o",
-                    "%.d",
-                    "%.so",
+                    "bin/",
+                    "obj/",
                     "node_modules/",
-                },
-                vimgrep_arguments = {
-                    "--ignore",
-                    "--smart-case",
                 },
             },
             extensions = {

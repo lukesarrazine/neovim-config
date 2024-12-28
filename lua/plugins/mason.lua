@@ -28,7 +28,11 @@ return {
 		})
 		lspconfig.ts_ls.setup({})
 		lspconfig.csharp_ls.setup({})
-		lspconfig.rust_analyzer.setup({})
+		lspconfig.rust_analyzer.setup({
+			settings = {
+				diagnostics = true,
+			},
+		})
 		lspconfig.svelte.setup({})
 
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
