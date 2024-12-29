@@ -4,12 +4,12 @@ return {
         "stevearc/conform.nvim",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        "hrsh7th/cmp-nvim-lsp",     -- LSP source for nvim-cmp
+        "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/nvim-cmp",
-        "hrsh7th/cmp-buffer",       -- Buffer source
-        "hrsh7th/cmp-path",         -- Path source
-        "saadparwaiz1/cmp_luasnip", -- Snippet source
-        "L3MON4D3/LuaSnip",         -- Snippet engine
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "saadparwaiz1/cmp_luasnip",
+        "L3MON4D3/LuaSnip",
 
     },
     config = function()
@@ -41,6 +41,20 @@ return {
                         capabilities = capabilities,
                     })
                 end,
+                ["lua_ls"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.lua_ls.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            Lua = {
+                                diagnostics = {
+                                    globals = { "vim" },
+                                },
+                            },
+                        },
+                    }
+                end,
+
             },
         })
         cmp.setup({
@@ -66,6 +80,15 @@ return {
         vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
         vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-        vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+
+        -- Formatting
+        vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {})
+        -- Auto format on save
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = "*",
+            callback = function()
+                vim.lsp.buf.format({ async = false }) -- Synchronous formatting before saving
+            end,
+        })
     end,
 }
