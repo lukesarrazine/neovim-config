@@ -1,3 +1,5 @@
+local utils = require("utils")
+
 local theme_priority = 1000
 local current_colorscheme_index = 1
 local default_colorscheme = "bamboo"
@@ -52,8 +54,7 @@ return {
         priority = theme_priority + 1, -- run this last
         config = function()
             -- Automatically set colorscheme based on OS
-            local is_windows = vim.loop.os_uname().sysname:match("Windows")
-            if is_windows then
+            if utils.is_windows() then
                 vim.cmd("colorscheme rose-pine")
             else
                 vim.cmd("colorscheme " .. default_colorscheme)

@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- General Vim settings
 require("vim-settings")
+require("ext-dependencies.tmux").ensure_tmux()
 
 -- Load plugins
 require("lazy").setup("plugins")
-
