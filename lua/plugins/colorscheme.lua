@@ -1,35 +1,93 @@
-local utils = require("utils")
+local M = {}
+local time_utils = require("util.time")
+local colorscheme_priority = 1000
+local colorscheme_change_seconds = 1000 * 60; -- milliseconds * seconds * minutes
+math.randomseed(os.time())                    -- seed randomness
 
-local theme_priority = 1000
-local current_colorscheme_index = 1
-local default_colorscheme = "bamboo"
-local colorschemes = { default_colorscheme, "everforest", "kanagawa-lotus", "nightfox", "rose-pine" }
+M.day_colorschemes = {
+    "bamboo",
+    "everforest-hard",
+    "everforest-soft",
+    "kanagawa-lotus",
+}
 
-local function cycle_colorscheme()
-    current_colorscheme_index = current_colorscheme_index + 1
-    if current_colorscheme_index > #colorschemes then
-        current_colorscheme_index = 1
-    end
+M.night_colorschemes = {
+    "nightfox",
+    "tokyonight-moon",
+    "everforest-hard",
+    "everforest-soft",
+    "bamboo",
+    "kanagawa-dragon",
+}
 
-    local colorscheme = colorschemes[current_colorscheme_index]
-    local success, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
-    if success then
-        print("Switched to " .. colorscheme .. " colorscheme")
+M.special_colorschemes = {
+    ["12-25"] = "everforest", -- Christmas (Dec 25)
+}
+
+M.set_colorscheme = function()
+    local is_daytime = time_utils.is_daytime()
+    local selected_colorcheme
+    if is_daytime then
+        selected_colorcheme = M.get_random_element(M.day_colorschemes)
     else
-        print("Failed to switch to " .. colorscheme .. " colorscheme")
+        selected_colorcheme = M.get_random_element(M.night_colorschemes)
     end
+
+    if is_daytime then
+        vim.opt.background = "light"
+    else
+        vim.opt.background = "dark"
+    end
+
+    if selected_colorcheme:match("everforest") then
+        if selected_colorcheme == "everforest-medium" then
+            vim.g.everforest_background = "medium"
+        elseif selected_colorcheme == "everforest-soft" then
+            vim.g.everforest_background = "soft"
+        end
+        selected_colorcheme = "everforest" --apply base
+    end
+
+    vim.cmd("colorscheme " .. selected_colorcheme)
+    print("Using colorscheme " .. selected_colorcheme)
+end
+
+vim.keymap.set("n", "<leader>cc", M.set_colorscheme, { desc = "Cycle through colorschemes" })
+
+M.get_random_element = function(list)
+    return list[math.random(#list)]
+end
+
+M.setup = function()
+    M.set_colorscheme();
+
+    local timer = vim.loop.new_timer()
+    timer:start(
+        colorscheme_change_seconds, -- delay
+        colorscheme_change_seconds, -- interval
+        vim.schedule_wrap(function()
+            M.set_colorscheme()
+        end)
+    )
 end
 
 return {
     {
         "EdenEast/nightfox.nvim",
         lazy = false,
-        priority = theme_priority,
+        priority = colorscheme_priority,
+        config = M.setup, -- Call setup
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
     },
     {
         "ribru17/bamboo.nvim",
         lazy = false,
-        priority = theme_priority,
+        priority = colorscheme_priority,
         config = function()
             require("bamboo").setup({})
         end,
@@ -37,30 +95,17 @@ return {
     {
         "sainnhe/everforest",
         lazy = false,
-        priority = theme_priority,
+        priority = colorscheme_priority,
         config = function()
             vim.g.everforest_enable_italic = false
         end,
     },
     {
         "rebelot/kanagawa.nvim",
-        priority = theme_priority,
+        priority = colorscheme_priority,
         lazy = false,
-    },
-    {
-        "rose-pine/neovim",
-        name = "rose-pine",
-        lazy = false,
-        priority = theme_priority + 1, -- run this last
         config = function()
-            -- Automatically set colorscheme based on OS
-            if utils.is_windows() then
-                vim.cmd("colorscheme rose-pine")
-            else
-                vim.cmd("colorscheme " .. default_colorscheme)
-            end
-
-            vim.keymap.set("n", "<leader>cc", cycle_colorscheme, { desc = "Cycle through colorschemes" })
-        end,
+            require("kanagawa")
+        end
     },
 }

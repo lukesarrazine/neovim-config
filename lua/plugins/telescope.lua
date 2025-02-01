@@ -1,8 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
-    dependencies = { 
+    dependencies = {
         "nvim-lua/plenary.nvim",
-    'nvim-telescope/telescope-ui-select.nvim'
     },
     config = function()
         require("ext-dependencies.ripgrep").ensure_ripgrep()
@@ -10,7 +9,6 @@ return {
         local telescope = require("telescope")
         local builtin = require("telescope.builtin")
 
-        -- Telescope setup (optional)
         telescope.setup({
             defaults = {
                 mappings = {
@@ -24,16 +22,10 @@ return {
                     "bin/",
                     "obj/",
                     "node_modules/",
-                },
-            },
-            extensions = {
-                ["ui-select"] = {
-                    require("telescope.themes").get_dropdown({}),
+                    '%__virtual.cs$'
                 },
             },
         })
-
-        telescope.load_extension("ui-select")
 
         -- Key mappings
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })

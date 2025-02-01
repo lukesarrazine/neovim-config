@@ -1,13 +1,13 @@
-local utils = require("utils")
+local env_utils = require("util.environments")
 
 local M = {}
 
 local function install_tmux()
     local cmd
 
-    if utils.is_windows() then
+    if env_utils.is_windows() then
         cmd = "choco install tmux -y"
-    elseif utils.is_mac() then
+    elseif env_utils.is_mac() then
         cmd = "brew install tmux"
     else
         vim.notify("Cannot find package manager to install tmux")
@@ -18,7 +18,7 @@ local function install_tmux()
 end
 
 function M.ensure_tmux()
-    if not utils.is_executable("tmux") then
+    if not env_utils.is_executable("tmux") then
         print("tmux not found! Installing now...")
         install_tmux()
     end
