@@ -1,8 +1,8 @@
 local M = {}
 local time_utils = require("util.time")
 local colorscheme_priority = 1000
-local colorscheme_change_seconds = 1000 * 60; -- milliseconds * seconds * minutes
-math.randomseed(os.time())                    -- seed randomness
+local colorscheme_change_seconds = 1000 * 60 * 60; -- milliseconds * seconds * minutes
+math.randomseed(os.time())                         -- seed randomness
 
 M.day_colorschemes = {
     "bamboo",
